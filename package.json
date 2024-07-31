@@ -1,0 +1,12 @@
+{
+    "name": "spi-capture-be",
+    "description": "a Backend server for capturing SPI signal",
+    "version": "0.0.1",
+    "dependencies": {},
+    "node-red": {
+        "settings": {
+            "flowFile": "flows.json",
+            "credentialsFile": "flows_cred.json"
+        }
+    }
+}

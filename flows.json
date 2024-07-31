@@ -1,0 +1,249 @@
+[
+    {
+        "id": "74261416e763211c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "59277170bebe1f35",
+        "type": "postgreSQLConfig",
+        "name": "",
+        "host": "127.0.0.1",
+        "hostFieldType": "str",
+        "port": "5432",
+        "portFieldType": "num",
+        "database": "spi",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "",
+        "applicationNameType": "str",
+        "max": "10",
+        "maxFieldType": "num",
+        "idle": "1000",
+        "idleFieldType": "num",
+        "connectionTimeout": "10000",
+        "connectionTimeoutFieldType": "num",
+        "user": "sonnguyen",
+        "userFieldType": "str",
+        "password": "",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "2596d8b6e35e9051",
+        "type": "http in",
+        "z": "74261416e763211c",
+        "name": "[get] /home",
+        "url": "/home",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 180,
+        "wires": [
+            [
+                "78555c18ea04417b"
+            ]
+        ]
+    },
+    {
+        "id": "78555c18ea04417b",
+        "type": "change",
+        "z": "74261416e763211c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"message\":\"hello world\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 260,
+        "y": 180,
+        "wires": [
+            [
+                "afbba3a3c497a9be",
+                "769f0ad8720eba10"
+            ]
+        ]
+    },
+    {
+        "id": "afbba3a3c497a9be",
+        "type": "http response",
+        "z": "74261416e763211c",
+        "name": "Hello world",
+        "statusCode": "200",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "x": 510,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "769f0ad8720eba10",
+        "type": "debug",
+        "z": "74261416e763211c",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "fcca854fd928743b",
+        "type": "postgresql",
+        "z": "74261416e763211c",
+        "name": "",
+        "query": "CREATE TABLE IF NOT EXISTS devices (\n    device_id UUID ,\n    name TEXT,\n    description TEXT,\n    PRIMARY KEY(device_id)\n);\n\nCREATE TABLE IF NOT EXISTS spi_raw (\n    datum_id UUID,\n    spi_content text,\n    device_id UUID,\n    Time TIMESTAMP,\n    PRIMARY KEY(datum_id),\n    CONSTRAINT fk_device_id FOREIGN KEY (device_id) REFERENCES devices(device_id)\n\n)",
+        "postgreSQLConfig": "59277170bebe1f35",
+        "split": false,
+        "rowsPerMsg": 1,
+        "outputs": 1,
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "ca1ea748a093803d"
+            ]
+        ]
+    },
+    {
+        "id": "ca1ea748a093803d",
+        "type": "debug",
+        "z": "74261416e763211c",
+        "name": "init db",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 470,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "af4e06eed812cb01",
+        "type": "inject",
+        "z": "74261416e763211c",
+        "name": "Initialization",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 60,
+        "wires": [
+            [
+                "fcca854fd928743b"
+            ]
+        ]
+    },
+    {
+        "id": "18c73f61a0b54258",
+        "type": "http in",
+        "z": "74261416e763211c",
+        "name": "[post] /spi/:device/:timestamp",
+        "url": "/spi/:device/:timestamp",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 280,
+        "wires": [
+            [
+                "560d6579ef803342",
+                "2f274a4764d99fbc"
+            ]
+        ],
+        "info": "Add new spi raw data of a specific device and timestamp"
+    },
+    {
+        "id": "560d6579ef803342",
+        "type": "debug",
+        "z": "74261416e763211c",
+        "name": "add api",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e4a4b26517af2bf3",
+        "type": "http response",
+        "z": "74261416e763211c",
+        "name": "Hello world",
+        "statusCode": "200",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "x": 670,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "2f274a4764d99fbc",
+        "type": "change",
+        "z": "74261416e763211c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"message\":\"Hello world\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 280,
+        "wires": [
+            [
+                "e4a4b26517af2bf3"
+            ]
+        ]
+    }
+]
