@@ -193,7 +193,7 @@
         "id": "560d6579ef803342",
         "type": "debug",
         "z": "74261416e763211c",
-        "name": "add api",
+        "name": "add spi raw data",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -202,7 +202,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 380,
+        "x": 400,
         "y": 360,
         "wires": []
     },
